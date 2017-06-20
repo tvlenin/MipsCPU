@@ -19,6 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module programMips(
+	 input [2:0] enableFSM,
     input clock,
     input [4:0] address,
     output [31:0] data
@@ -27,13 +28,14 @@ reg [31:0] dataReg ;
 reg [31:0] rom [0:31];
 
 always @(negedge clock) begin
-    dataReg <= rom[address];
+	if(enableFSM == 3'b000)
+		dataReg <= rom[address];
 end
-initial begin //calculator all instructions pre
+	initial begin //calculator all instructions pre
     rom[0] = 32'b00000000001000100000000000100000;//add t0, t1, t2 
     rom[1] = 32'b00000000001000100000000000100010;//sub t0, t1, t2
     rom[2] = 32'b00000000001000100000000000100110;//mul t0, t1, t2
-end
+	end
 assign data = dataReg;
 
 

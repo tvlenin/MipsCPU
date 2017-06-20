@@ -19,18 +19,22 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module registers(
+	 input [2:0] enableFSM,
     input [31:0] data_in1,
 	 input [31:0] data_in2,
+	 input [31:0] data_in3,
     output [31:0] data_out1,
 	 output [31:0] data_out2,
     input rw,
     input [4:0] addr1,
 	 input [4:0] addr2,
+	 input [4:0] addr3,
+	 output [31:0] exit,
     input clock
     );
 reg [31:0] dataReg1;
 reg [31:0] dataReg2;
-	 
+
 reg [31:0] ram [0:31];
 initial begin
     ram[0] = 0; //t0
@@ -43,7 +47,7 @@ initial begin
     ram[7] = 0; //t7
 end
   always @(posedge clock) begin
-    if (rw == 1)begin
+    if (rw == 1 && enableFSM == 3'b001)begin
     dataReg1 <= ram[addr1];
 	 dataReg2 <= ram[addr2];
 	 end
@@ -55,9 +59,12 @@ end
      ram[addr1] <= data_in1;
 	  ram[addr2] <= data_in2;
 	 end
+	 if (enableFSM == 3'b011)begin
+     ram[00011] <= data_in3;
+	 end
   end
 assign data_out1 = dataReg1;
 assign data_out2 = dataReg2;
-
+assign exit = ram[00011];
 
 endmodule

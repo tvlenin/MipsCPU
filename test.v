@@ -4,7 +4,7 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   23:56:48 06/09/2017
+// Create Date:   23:06:01 06/18/2017
 // Design Name:   top
 // Module Name:   /home/tvlenin/Projects/XILINX/MipsCPU/test.v
 // Project Name:  MipsCPU
@@ -26,6 +26,7 @@ module test;
 
 	// Inputs
 	reg clock;
+	reg reset;
 	reg [5:0] opc;
 	reg [5:0] func;
 	reg [4:0] Number1;
@@ -37,6 +38,7 @@ module test;
 	// Instantiate the Unit Under Test (UUT)
 	top uut (
 		.clock(clock), 
+		.reset(reset), 
 		.opc(opc), 
 		.func(func), 
 		.Number1(Number1), 
@@ -47,16 +49,23 @@ always #1 clock = ~clock;
 	initial begin
 		// Initialize Inputs
 		clock = 0;
+		reset = 0;
 		opc = 0;
 		func = 0;
 		Number1 = 0;
 		Number2 = 0;
 
 		// Wait 100 ns for global reset to finish
-		#100;
-		func = 6'b100000;
-      Number1 = 0;
-		Number2 = 1;  
+		
+		#0;
+		reset = 1;
+		#2
+		reset = 0;
+		Number1 = 1;
+		#15
+		reset = 1;
+		#2
+		reset = 0;
 		// Add stimulus here
 
 	end

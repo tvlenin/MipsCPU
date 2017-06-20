@@ -19,17 +19,19 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module ALU(
+	 input [2:0] enableFSM,
     input clock,
     input [5:0] opcode,
     input [31:0] nIn1,
     input [31:0] nIn2,
     input [5:0] functionCode,
-    output [31:0] answerOut
+    output [31:0] answerOut,
+	 output [31:0] answerOut2
 	 
     );
 reg [31:0] answerOutreg;
-always @(*) begin
-	if (opcode == 6'b000000) begin
+always @(posedge clock) begin
+	if (opcode == 6'b000000 && enableFSM == 6'b010) begin
 		if (functionCode == 6'b100000) begin//add two numbers
 			answerOutreg = nIn1 + nIn2;
 		end
@@ -48,4 +50,5 @@ always @(*) begin
 	end
 end 
 assign answerOut = answerOutreg;
+assign answerOut2 = answerOutreg;
 endmodule

@@ -19,6 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module splitInstruction(
+	 input [2:0] enableFSM,
     input [31:0] instruction,
     output reg[5:0] opcodeOut,
     output reg[4:0] rs,
